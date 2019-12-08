@@ -10,19 +10,19 @@ import UIKit
 fileprivate let cellId = "cell"
 class MainViewController: UIViewController {
     
-    fileprivate let tableView: UITableView = {
-        let tv = UITableView(frame: .zero, style: .plain)
-        tv.separatorStyle = .none
-        tv.allowsSelection = false
-        tv.backgroundColor = .green
-        tv.register(EarthquakeCell.self, forCellReuseIdentifier: cellId)
-        return tv
-    }()
-    
     let mainSearchView: UIView = {
         let uv =  MainSearchView(frame: .zero)
         return uv
     }()
+
+    fileprivate let tableView: UITableView = {
+        let tv = UITableView(frame: .zero, style: .plain)
+        tv.separatorStyle = .none
+        tv.allowsSelection = false
+        tv.register(EarthquakeCell.self, forCellReuseIdentifier: cellId)
+        return tv
+    }()
+    
 
     var earthquakesArray = [Feature]()
 
@@ -35,14 +35,15 @@ class MainViewController: UIViewController {
     
     func setupView(){
         navigationController?.navigationBar.barTintColor =  #colorLiteral(red: 0.4020084143, green: 0.689712584, blue: 0.1968233883, alpha: 1)
-        title = "Urth"
+        navigationController?.navigationBar.shadowImage = UIImage()
+        title = "Search for Earthquakes"
         view.addSubview(tableView)
         view.addSubview(mainSearchView)
         tableView.delegate = self
         tableView.dataSource = self
         mainSearchView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor,
                          bottom: nil, trailing: view.trailingAnchor,
-                         centerXaxis: nil, centerYaxis: nil, size: .init(width: 0, height: 100))
+                         centerXaxis: nil, centerYaxis: nil, size: .init(width: 0, height: 150))
         
         tableView.anchor(top: mainSearchView.bottomAnchor, leading: view.leadingAnchor,
                          bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor,
