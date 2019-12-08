@@ -7,21 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370A7540239C1136001204B1 /* EarthquakeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A753F239C1136001204B1 /* EarthquakeAPI.swift */; };
+		370A7542239C12DE001204B1 /* EarthquakeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370A7541239C12DE001204B1 /* EarthquakeResponse.swift */; };
 		370C5A78239B2AA40070C3A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C5A77239B2AA40070C3A9 /* AppDelegate.swift */; };
-		370C5A7A239B2AA40070C3A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C5A79239B2AA40070C3A9 /* ViewController.swift */; };
-		370C5A7D239B2AA40070C3A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370C5A7B239B2AA40070C3A9 /* Main.storyboard */; };
+		370C5A7A239B2AA40070C3A9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370C5A79239B2AA40070C3A9 /* MainViewController.swift */; };
 		370C5A7F239B2AA50070C3A9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 370C5A7E239B2AA50070C3A9 /* Assets.xcassets */; };
 		370C5A82239B2AA50070C3A9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370C5A80239B2AA50070C3A9 /* LaunchScreen.storyboard */; };
+		37AE5F7E239B5F440007DD83 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AE5F7D239B5F440007DD83 /* Util.swift */; };
+		37AE5F80239B6FB90007DD83 /* EarthquakeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AE5F7F239B6FB90007DD83 /* EarthquakeCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		370A753F239C1136001204B1 /* EarthquakeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeAPI.swift; sourceTree = "<group>"; };
+		370A7541239C12DE001204B1 /* EarthquakeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeResponse.swift; sourceTree = "<group>"; };
 		370C5A74239B2AA40070C3A9 /* Urth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Urth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		370C5A77239B2AA40070C3A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		370C5A79239B2AA40070C3A9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		370C5A7C239B2AA40070C3A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		370C5A79239B2AA40070C3A9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		370C5A7E239B2AA50070C3A9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		370C5A81239B2AA50070C3A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		370C5A83239B2AA50070C3A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		37AE5F7D239B5F440007DD83 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		37AE5F7F239B6FB90007DD83 /* EarthquakeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +41,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		370A753B239C0327001204B1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				370A753F239C1136001204B1 /* EarthquakeAPI.swift */,
+				370A7541239C12DE001204B1 /* EarthquakeResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		370A753C239C032D001204B1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				370C5A80239B2AA50070C3A9 /* LaunchScreen.storyboard */,
+				370C5A7E239B2AA50070C3A9 /* Assets.xcassets */,
+				37AE5F7F239B6FB90007DD83 /* EarthquakeCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		370A753D239C0332001204B1 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				370C5A79239B2AA40070C3A9 /* MainViewController.swift */,
+				370C5A77239B2AA40070C3A9 /* AppDelegate.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		370A753E239C033C001204B1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				370C5A83239B2AA50070C3A9 /* Info.plist */,
+				37AE5F7D239B5F440007DD83 /* Util.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		370C5A6B239B2AA40070C3A9 = {
 			isa = PBXGroup;
 			children = (
@@ -54,12 +97,10 @@
 		370C5A76239B2AA40070C3A9 /* Urth */ = {
 			isa = PBXGroup;
 			children = (
-				370C5A77239B2AA40070C3A9 /* AppDelegate.swift */,
-				370C5A79239B2AA40070C3A9 /* ViewController.swift */,
-				370C5A7B239B2AA40070C3A9 /* Main.storyboard */,
-				370C5A7E239B2AA50070C3A9 /* Assets.xcassets */,
-				370C5A80239B2AA50070C3A9 /* LaunchScreen.storyboard */,
-				370C5A83239B2AA50070C3A9 /* Info.plist */,
+				370A753E239C033C001204B1 /* Resources */,
+				370A753D239C0332001204B1 /* Controller */,
+				370A753C239C032D001204B1 /* View */,
+				370A753B239C0327001204B1 /* Model */,
 			);
 			path = Urth;
 			sourceTree = "<group>";
@@ -124,7 +165,6 @@
 			files = (
 				370C5A82239B2AA50070C3A9 /* LaunchScreen.storyboard in Resources */,
 				370C5A7F239B2AA50070C3A9 /* Assets.xcassets in Resources */,
-				370C5A7D239B2AA40070C3A9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +175,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				370C5A7A239B2AA40070C3A9 /* ViewController.swift in Sources */,
+				37AE5F80239B6FB90007DD83 /* EarthquakeCell.swift in Sources */,
+				370C5A7A239B2AA40070C3A9 /* MainViewController.swift in Sources */,
+				370A7540239C1136001204B1 /* EarthquakeAPI.swift in Sources */,
+				37AE5F7E239B5F440007DD83 /* Util.swift in Sources */,
+				370A7542239C12DE001204B1 /* EarthquakeResponse.swift in Sources */,
 				370C5A78239B2AA40070C3A9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,14 +187,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		370C5A7B239B2AA40070C3A9 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				370C5A7C239B2AA40070C3A9 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		370C5A80239B2AA50070C3A9 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -284,7 +320,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8F9MG3W29J;
-				INFOPLIST_FILE = Urth/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Urth/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,7 +338,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8F9MG3W29J;
-				INFOPLIST_FILE = Urth/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Urth/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
