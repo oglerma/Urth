@@ -12,10 +12,17 @@ class MainViewController: UIViewController {
     
     fileprivate let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
+        tv.separatorStyle = .none
+        tv.allowsSelection = false
+        tv.backgroundColor = .green
         tv.register(EarthquakeCell.self, forCellReuseIdentifier: cellId)
         return tv
     }()
     
+    let mainSearchView: UIView = {
+        let uv =  MainSearchView(frame: .zero)
+        return uv
+    }()
 
     var earthquakesArray = [Feature]()
 
@@ -27,10 +34,17 @@ class MainViewController: UIViewController {
     }
     
     func setupView(){
+        navigationController?.navigationBar.barTintColor =  #colorLiteral(red: 0.4020084143, green: 0.689712584, blue: 0.1968233883, alpha: 1)
+        title = "Urth"
         view.addSubview(tableView)
+        view.addSubview(mainSearchView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor,
+        mainSearchView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor,
+                         bottom: nil, trailing: view.trailingAnchor,
+                         centerXaxis: nil, centerYaxis: nil, size: .init(width: 0, height: 100))
+        
+        tableView.anchor(top: mainSearchView.bottomAnchor, leading: view.leadingAnchor,
                          bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor,
                          centerXaxis: nil, centerYaxis: nil)
     }
