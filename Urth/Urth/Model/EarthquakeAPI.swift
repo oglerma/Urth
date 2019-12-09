@@ -22,23 +22,21 @@ class  EarthquakeAPI {
         }
     }
     
-    class func requestEarthquakeData(magnitude: Double = 4.5,
-                                     country: String = "US", daysAgo: Int = 7,
-                                     completionhandler: @escaping (Earthquake?, Error?) -> Void){
+    class func requestEarthquakeData(magnitude: Double,
+                                     country: String, daysAgo: Int,
+                                     completionhandler: @escaping ([Feature]?, Error?) -> Void){
         
-        let topEarthQuakesURL = EarthquakeAPI.Endpoint.overFourPastWeekURL.url
+        let topEarthQuakesURL = EarthquakeAPI.Endpoint.oneWeekEarthquakeURL.url
         let task = URLSession.shared.dataTask(with: topEarthQuakesURL) { (data, response, error) in
-            guard let data = data else {return}
-            print(data)
-            if let error = error {
-                print(error)
+            guard let data = data else {
+                completionhandler(nil, error)
                 return
             }
-            let decoder = JSONDecoder()
             
+            let decoder = JSONDecoder()
             do {
-                let EarthquakeData = try decoder.decode(Earthquake.self, from: data)
-                print(EarthquakeData.features)
+                let EarthquakeData = try decoder.decode(Earthquake.self, from: data).features
+                completionhandler(EarthquakeData, nil)
             }catch {
                 print(error)
             }

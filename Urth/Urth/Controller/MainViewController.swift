@@ -14,8 +14,9 @@ class MainViewController: UIViewController {
     fileprivate let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.separatorStyle = .none
-        tv.allowsSelection = false
+//        tv.allowsSelection = false
         tv.register(EarthquakeCell.self, forCellReuseIdentifier: cellId)
+        tv.accessibilityIdentifier = "main_tblview_id"
         return tv
     }()
     
@@ -56,15 +57,21 @@ class MainViewController: UIViewController {
 // TableView
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return earthquakesArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EarthquakeCell
-        cell.place.text = "One text"
+        cell.place.text = earthquakesArray[indexPath.row].properties.place
+        cell.magnitude.text = "\(earthquakesArray[indexPath.row].properties.mag)"
+        cell.magnitude.layer.cornerRadius = 10
+        cell.magnitude.layer.borderWidth = 1
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
 }
 
 // Search
@@ -72,7 +79,16 @@ extension MainViewController: SearchDelegate {
     func searchTapped(day: Int, country: String, magnitude: Int) {
         if day != 0 && magnitude != 0 && country != ""{
             // Make Request Here
-            // Show ActivitySpinner
+            EarthquakeAPI.requestEarthquakeData(magnitude: Double(magnitude), country: country, daysAgo: day) { (eartquake, error) in
+                guard let earthquakeData = eartquake else {return}
+                self.earthquakesArray = earthquakeData
+                // requestToFilterThe Array
+                print(earthquakeData.count)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                print("Request is going")
+            }
             print("We have day: \(day), magnitude:\(magnitude) and country:\(country)")
         }else {
             let ac = UIAlertController(title: "Missing Parameter", message: "Please fill all the search options", preferredStyle: .alert)

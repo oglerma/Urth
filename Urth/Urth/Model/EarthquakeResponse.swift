@@ -38,8 +38,8 @@ struct Feature: Codable {
 
 // MARK: - Properties
 struct Properties: Codable {
-    let mag: Double?
-    let place: String?
+    let mag: Double
+    let place: String
     let time, updated: Int?
     let tz: Int?
     let url: String?
