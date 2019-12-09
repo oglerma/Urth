@@ -10,10 +10,6 @@ import UIKit
 fileprivate let cellId = "cell"
 class MainViewController: UIViewController {
     
-    let mainSearchView: UIView = {
-        let uv =  MainSearchView(frame: .zero)
-        return uv
-    }()
 
     fileprivate let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
@@ -28,12 +24,15 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
         setupView()
         
 
     }
     
     func setupView(){
+        let mainSearchView = MainSearchView(frame: .zero)
+        mainSearchView.searchDelegate = self
         navigationController?.navigationBar.barTintColor =  #colorLiteral(red: 0.4020084143, green: 0.689712584, blue: 0.1968233883, alpha: 1)
         navigationController?.navigationBar.shadowImage = UIImage()
         title = "Search for Earthquakes"
@@ -54,7 +53,7 @@ class MainViewController: UIViewController {
     
 }
 
-
+// TableView
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -66,11 +65,49 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-
-
-    
-
 }
+
+// Search
+extension MainViewController: SearchDelegate {
+    func searchTapped(day: Int, country: String, magnitude: Int) {
+        if day != 0 && magnitude != 0 && country != ""{
+            // Make Request Here
+            // Show ActivitySpinner
+            print("We have day: \(day), magnitude:\(magnitude) and country:\(country)")
+        }else {
+            let ac = UIAlertController(title: "Missing Parameter", message: "Please fill all the search options", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "OK", style: .cancel)
+            ac.addAction(alertAction)
+            present(ac, animated: true)
+        }
+    }
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //

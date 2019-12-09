@@ -7,94 +7,86 @@
 //
 
 import UIKit
+
+protocol SearchDelegate {
+    func searchTapped(day: Int, country: String, magnitude: Int)
+}
+
+protocol PickerDelegate {
+    func pickerSelected()
+}
+
 class MainSearchView: UIView {
     
-    var selectedDay: String?
+    var selectedDay = 0
+    var selectedCountry = ""
+    var selectedMagnitude = 0
+    var searchDelegate: SearchDelegate!
+    let firstPicker =  UIPickerView()
+    let secondPicker = UIPickerView()
     
     // Country UI
-    let countryTextLabel: UILabel = {
-        let cntrytxt = UILabel()
+    let countryTextLabel: SearchOptionLabels = {
+        let cntrytxt = SearchOptionLabels()
         cntrytxt.text =  "Country"
-        cntrytxt.textColor = .black
-        cntrytxt.backgroundColor = .clear
-        cntrytxt.textAlignment = .center
-        cntrytxt.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        cntrytxt.accessibilityIdentifier = "country_text"
+        cntrytxt.accessibilityIdentifier = "country_txt_label"
        return cntrytxt
     }()
     
-    let countryTxtView: UILabel = {
-        let txt = UILabel()
+    let countryTxtView: SearchOptionTextFields = {
+        let txt = SearchOptionTextFields()
         txt.text = "Select a country"
-        txt.backgroundColor = .clear
-        txt.textColor = .black
-        txt.textAlignment = .center
-        txt.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        txt.layer.cornerRadius = 5
-        txt.layer.borderWidth = 1
-        txt.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        txt.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        
+        txt.accessibilityIdentifier = "country_txtview"
         return txt
     }()
     
+    
     // Magnitude UI
-    let magnitudeTxtLabel: UILabel = {
-        let magnitudeTxt = UILabel()
+    let magnitudeTxtLabel: SearchOptionLabels = {
+        let magnitudeTxt = SearchOptionLabels()
         magnitudeTxt.text =  "Magnitude"
-        magnitudeTxt.textColor = .black
-        magnitudeTxt.backgroundColor = .clear
-        magnitudeTxt.textAlignment = .center
-        magnitudeTxt.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        magnitudeTxt.accessibilityIdentifier = "magnitude_txt_lbl"
         return magnitudeTxt
     }()
     
-    let magnitudeTxtView: UILabel = {
-        let txt = UILabel()
+    let magnitudeTxtView: SearchOptionTextFields = {
+        let txt = SearchOptionTextFields()
         txt.text = "Select Magnitude"
-        txt.backgroundColor = .clear
-        txt.textColor = .black
-        txt.textAlignment = .center
-        txt.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        txt.layer.cornerRadius = 5
-        txt.layer.borderWidth = 1
-        txt.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        txt.accessibilityIdentifier = "magnitude_txtview"
         return txt
     }()
     
+
+    
     // Days UI
-    let askForDaysTxtLabel: UILabel = {
-        let askForDaysTxtLabel = UILabel()
+    let askForDaysTxtLabel: SearchOptionLabels = {
+        let askForDaysTxtLabel = SearchOptionLabels()
         askForDaysTxtLabel.text =  "Select past days: "
-        askForDaysTxtLabel.textColor = .black
-        askForDaysTxtLabel.backgroundColor = .clear
-        askForDaysTxtLabel.textAlignment = .center
-        askForDaysTxtLabel.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        askForDaysTxtLabel.accessibilityIdentifier = "days_txt_lbl"
         return askForDaysTxtLabel
     }()
 
-    var daySelectedTextView: UILabel = {
-        let daySelected = UILabel()
-        daySelected.backgroundColor = .clear
-        daySelected.textAlignment = .center
-        daySelected.textColor = .black
-        daySelected.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+    var daySelectedTextView: SearchOptionLabels = {
+        let daySelected = SearchOptionLabels()
+        daySelected.accessibilityIdentifier = "days_txtview"
         return daySelected
     }()
     
     let slider: DaysSlider = {
         let slider = DaysSlider(frame: .zero)
-        slider.backgroundColor = .clear
         slider.addTarget(self, action: #selector(slidingInProgress(slider:)), for: .valueChanged)
+        slider.accessibilityIdentifier = "slider_id"
         return slider
     }()
     @objc func slidingInProgress(slider: UISlider){
         let days = Int(slider.value)
+        selectedDay = days
         if days == 1 {
             daySelectedTextView.text = "\(days) day back"
         }else {
             daySelectedTextView.text = "\(days) days back"
         }
+        
     }
     
     lazy var labelsStackView: UIStackView = {
@@ -141,21 +133,15 @@ class MainSearchView: UIView {
         let btn = UIButton(type: .system)
         btn.setTitleColor(.black, for: .normal)
         btn.setTitle("Search", for: .normal)
+        btn.addTarget(self, action: #selector(searchTapped), for: .touchUpInside)
         return btn
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .red
-        self.setNeedsLayout()
-        let width = self.frame.width
-        let heigth = self.frame.height
-        
-        print("This is width \(width)and height:\(heigth)" )
-        setupViews()
-        createPicker()
-        
+    @objc func searchTapped(){
+        searchDelegate.searchTapped(day: selectedDay, country: selectedCountry, magnitude: selectedMagnitude)
     }
+    
+
 
     func setupViews(){
         backgroundColor = #colorLiteral(red: 0.4102995396, green: 0.6531198621, blue: 0.2377773523, alpha: 1)
@@ -186,44 +172,95 @@ class MainSearchView: UIView {
                                       centerXaxis: nil, centerYaxis: nil)
 
 
+
     }
-    
+
+    /*******************************************************
+     * Picker
+     *******************************************************/
     func createPicker(){
-        let picker = UIPickerView()
-        picker.delegate = self
+        firstPicker.delegate = self
+        secondPicker.delegate = self
+        countryTxtView.inputView = firstPicker
+        magnitudeTxtView.inputView = secondPicker
     }
     
+    func createToolBar(){
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let doneBtn = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dissmissKeyboard))
+        toolbar.setItems([doneBtn], animated: true)
+        toolbar.isUserInteractionEnabled = true
+        
+        countryTxtView.inputAccessoryView = toolbar
+        magnitudeTxtView.inputAccessoryView = toolbar
+    }
+    
+    @objc func dissmissKeyboard(){
+        self.endEditing(true)
+    }
+    
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+        createPicker()
+        createToolBar()
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
 }
 
+
+/*******************************************************
+ * PICKER EXTENSION
+ *******************************************************/
 extension MainSearchView: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return SearchSelctionModel.days.count
+
+        if firstPicker == pickerView {
+            return PickerData.listOfAllCountries.count
+        }else {
+            return PickerData.magnitudeValues.count
+        }
         
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return String(SearchSelctionModel.days[row])
+        
+
+        if firstPicker == pickerView {
+            return PickerData.listOfAllCountries[row]
+        }else {
+            return "\(PickerData.magnitudeValues[row])+ mag"
+        }
+        
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedDay = String(SearchSelctionModel.days[row])
-        askForDaysTxtLabel.text = selectedDay
+        if firstPicker == pickerView {
+            countryTxtView.text = PickerData.listOfAllCountries[row]
+            selectedCountry = PickerData.listOfAllCountries[row]
+        }else {
+            magnitudeTxtView.text = "\(PickerData.magnitudeValues[row])+ mag"
+            selectedMagnitude = PickerData.magnitudeValues[row]
+        }
     }
     
 }
 
 
-struct SearchSelctionModel {
-    static let days = [1,7,15, 30]
-    static let listOfAllCountries = [""]
+
+struct PickerData {
+    static let listOfAllCountries = ["Asia", "North", "West"]
     static let magnitudeValues = [1, 2, 3, 4, 5]
 }
+
 
