@@ -67,9 +67,9 @@
 				37141E47239D8F7B0004A17B /* UIViewHelpers.swift */,
 				37AE5F7F239B6FB90007DD83 /* EarthquakeCustomCell.swift */,
 				37FCE0EF239D4B740019BED8 /* InfoCardDetailView.swift */,
+				375781FF239F6F4D00DD6AB4 /* ActivityIndicator.swift */,
 				370C5A80239B2AA50070C3A9 /* LaunchScreen.storyboard */,
 				370C5A7E239B2AA50070C3A9 /* Assets.xcassets */,
-				375781FF239F6F4D00DD6AB4 /* ActivityIndicator.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

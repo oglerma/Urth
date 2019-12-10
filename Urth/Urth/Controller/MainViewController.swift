@@ -141,14 +141,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
 extension MainViewController: SearchDelegate {
     func searchTapped(day: Int, country: String, magnitude: Int) {
         if day != 0 && magnitude != 0 && country != ""{
-            // Make Request Here
             let calendar = Calendar.current
             let date = Date()
             activityIndicator.startAnimating()
             
             EarthquakeAPI.requestEarthquakeData{ (eartquake, error) in
                 if let _ = error {
-                    //Show Message for Alert
                     DispatchQueue.main.async {
                         // stop animating if there was an error
                         self.showNetworkErrorAlert(title: "Unable to retrieve data", message: "Please try again later")
