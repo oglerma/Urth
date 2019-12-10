@@ -36,14 +36,15 @@ class InfoCardDetailView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        backgroundColor = #colorLiteral(red: 0.4068799019, green: 0.6527641416, blue: 0.2465434372, alpha: 1)
+        clipsToBounds = true
     }
     
     func setupViews() {
         addSubview(place)
-        addSubview(date)
-        addSubview(magnitude)
+
         
-        place.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, centerXaxis: nil, centerYaxis: nil, padding: .init(top: 2, left: 2, bottom: 0, right: 2))
+        place.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, centerXaxis: nil, centerYaxis: nil, padding: .init(top: 2, left: 2, bottom: 0, right: 2), size: .init(width: 0, height: 40))
 
     }
     

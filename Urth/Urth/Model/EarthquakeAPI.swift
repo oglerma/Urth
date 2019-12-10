@@ -10,29 +10,22 @@ import Foundation
 
 class  EarthquakeAPI {
     enum Endpoint: String {
-        case overFourMagnitudeURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_month.geojson"
-        case overFourPastDayURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson"
-        case overFourPastWeekURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson"
-        case overFourOneHourAgoURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_hour.geojson"
-        case allMonthEarthQuakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
-        case oneWeekEarthquakeURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/1.0_week.geojson"
-        
+        case allMonthEarthquakesURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson"
+        case significantEarthquakes = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson"
         var url: URL {
             return URL(string: self.rawValue)!
         }
     }
     
-    class func requestEarthquakeData(magnitude: Double,
-                                     country: String, daysAgo: Int,
-                                     completionhandler: @escaping ([Feature]?, Error?) -> Void){
-        
-        let topEarthQuakesURL = EarthquakeAPI.Endpoint.oneWeekEarthquakeURL.url
-        let task = URLSession.shared.dataTask(with: topEarthQuakesURL) { (data, response, error) in
+    
+    
+    class func requestEarthquakeData(completionhandler: @escaping ([Feature]?, Error?) -> Void){
+        let allEarthquakesURL = EarthquakeAPI.Endpoint.allMonthEarthquakesURL.url
+        let task = URLSession.shared.dataTask(with: allEarthquakesURL) { (data, response, error) in
             guard let data = data else {
                 completionhandler(nil, error)
                 return
             }
-            
             let decoder = JSONDecoder()
             do {
                 let EarthquakeData = try decoder.decode(Earthquake.self, from: data).features
@@ -40,11 +33,7 @@ class  EarthquakeAPI {
             }catch {
                 print(error)
             }
-            
-            
-            
         }
-        
         task.resume()
     }
 

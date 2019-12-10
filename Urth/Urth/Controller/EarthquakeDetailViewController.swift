@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class EarthquakeDetailView: UIViewController {
+class EarthquakeDetailViewController: UIViewController, MKMapViewDelegate {
     
     //Map background
     let mapView : MKMapView  = {
@@ -20,13 +20,21 @@ class EarthquakeDetailView: UIViewController {
     let cardInfo: InfoCardDetailView = {
         var cardInfo = InfoCardDetailView(frame: .zero)
         cardInfo.layer.cornerRadius = 15
+        cardInfo.layer.borderWidth = 1
+        cardInfo.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         return cardInfo
     }()
     
+    var coordinates: [Double] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        mapView.delegate = self
+        let epicenter = MKPointAnnotation()
+        epicenter.title = "Epicenter"
+        epicenter.coordinate = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
+        mapView.addAnnotation(epicenter)
     }
     
     func setupViews(){
@@ -40,16 +48,17 @@ class EarthquakeDetailView: UIViewController {
                         bottom: view.safeAreaLayoutGuide.bottomAnchor,
                         trailing: view.trailingAnchor,
                         centerXaxis: nil, centerYaxis: nil,
-                        padding: .init(top: 0, left: 40, bottom: 4, right: 40),
-                        size: .init(width: 0, height: 200))
+                        padding: .init(top: 0, left: 80, bottom: 10, right: 80),
+                        size: .init(width: 0, height: 100))
     }
-    
+
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
- 
-    
-    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+
 }

@@ -40,7 +40,7 @@ struct Feature: Codable {
 struct Properties: Codable {
     let mag: Double
     let place: String
-    let time, updated: Int?
+    let time, updated: Int
     let tz: Int?
     let url: String?
     let detail: String?

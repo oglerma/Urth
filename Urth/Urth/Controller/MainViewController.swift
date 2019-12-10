@@ -22,13 +22,13 @@ class MainViewController: UIViewController {
     
 
     var earthquakesArray = [Feature]()
+    var someData = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
     
         setupView()
         
-
     }
     
     func setupView(){
@@ -50,6 +50,10 @@ class MainViewController: UIViewController {
                          centerXaxis: nil, centerYaxis: nil)
     }
     
+    func transformDate(milliseconds: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(milliseconds/1000))
+        return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
+    }
     
     
 }
@@ -62,15 +66,31 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EarthquakeCell
-        cell.place.text = earthquakesArray[indexPath.row].properties.place
+        let placeString = earthquakesArray[indexPath.row].properties.place
+        cell.place.attributedText = NSAttributedString(string: placeString, attributes:
+        [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        let milSeconds = earthquakesArray[indexPath.row].properties.time
+        cell.dateDisplayed.text = transformDate(milliseconds: milSeconds)
         cell.magnitude.text = "\(earthquakesArray[indexPath.row].properties.mag)"
         cell.magnitude.layer.cornerRadius = 10
         cell.magnitude.layer.borderWidth = 1
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let vc = EarthquakeDetailViewController()
+        let placeString = earthquakesArray[indexPath.row].properties.place
+        vc.cardInfo.place.attributedText = NSAttributedString(string: placeString, attributes:
+        [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        vc.cardInfo.place.textAlignment = .center
+        vc.coordinates = earthquakesArray[indexPath.row].geometry.coordinates
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -79,17 +99,28 @@ extension MainViewController: SearchDelegate {
     func searchTapped(day: Int, country: String, magnitude: Int) {
         if day != 0 && magnitude != 0 && country != ""{
             // Make Request Here
-            EarthquakeAPI.requestEarthquakeData(magnitude: Double(magnitude), country: country, daysAgo: day) { (eartquake, error) in
+            let calendar = Calendar.current
+            let date = Date()
+            
+            
+            EarthquakeAPI.requestEarthquakeData{ (eartquake, error) in
                 guard let earthquakeData = eartquake else {return}
-                self.earthquakesArray = earthquakeData
-                // requestToFilterThe Array
-                print(earthquakeData.count)
+                
+                // Getting the Day based on how far the user wants to go
+                let howFarBackDate = calendar.date(byAdding: .day, value: -day, to: date)
+                // Making the conversion in order to compare with the value received from the API
+                let convertIntoMilliseconds = Int(howFarBackDate?.timeIntervalSince1970 ?? 0 * 1000)
+                //Filtering dates first then magnitudes
+                let newData = earthquakeData.filter({($0.properties.time / 1000) > convertIntoMilliseconds}).filter({$0.properties.mag > Double(magnitude)})
+                
+                
+                self.earthquakesArray = newData
+
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
+                    
                 }
-                print("Request is going")
             }
-            print("We have day: \(day), magnitude:\(magnitude) and country:\(country)")
         }else {
             let ac = UIAlertController(title: "Missing Parameter", message: "Please fill all the search options", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "OK", style: .cancel)
@@ -126,25 +157,3 @@ extension MainViewController: SearchDelegate {
 
 
 
-//
-//let lastUpdated = Double(EarthquakeData.features[60].properties.time!)
-//let epocTime = TimeInterval(lastUpdated) / 1000 // convert it from milliseconds dividing it by 1000
-//let unixTimestamp = Date(timeIntervalSince1970: epocTime) //convert unix timestamp to Date
-//let dateFormatter = DateFormatter()
-//dateFormatter.timeZone = NSTimeZone() as TimeZone
-//dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-//dateFormatter.dateFormat =  "yyyy-MM-dd"
-//dateFormatter.string(from: unixTimestamp)
-//
-//let updatedTimeStamp = unixTimestamp
-//
-//
-//let calendar = Calendar.current
-//let year = calendar.component(.year, from: unixTimestamp)
-//let month = calendar.component(.month, from: unixTimestamp)
-//let day = calendar.component(.day, from: unixTimestamp)
-//
-//print(updatedTimeStamp)
-//print("this is the Year: \(year), Month: \(month) and day: \(day)")
-//
-//

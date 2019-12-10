@@ -35,7 +35,7 @@ class SearchOptionLabels: UILabel {
         self.textColor = .black
         self.backgroundColor = .clear
         self.textAlignment = .center
-        self.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        self.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,7 +49,7 @@ class SearchOptionTextFields: UITextField {
         self.backgroundColor = .clear
         self.textColor = .black
         self.textAlignment = .center
-        self.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        self.font = UIFont(name: "Menlo", size: 12)
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 1
         self.layer.borderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)

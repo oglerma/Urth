@@ -15,7 +15,7 @@ class EarthquakeCell: UITableViewCell {
         lbl.textColor = .black
         lbl.backgroundColor = .yellow
         lbl.textAlignment = .center
-        lbl.font = UIFont.boldSystemFont(ofSize: 24)
+        lbl.font = UIFont.boldSystemFont(ofSize: 15)
         return lbl
     }()
     
@@ -34,10 +34,16 @@ class EarthquakeCell: UITableViewCell {
         lbl.textColor = .black
         lbl.backgroundColor = .yellow
         lbl.textAlignment = .center
-        lbl.font = UIFont.boldSystemFont(ofSize: 12)
+        lbl.font = UIFont.boldSystemFont(ofSize: 10)
         return lbl
     }()
     
+    lazy var infoStackView: UIStackView = {
+        var stk = UIStackView(arrangedSubviews: [place,dateDisplayed])
+        stk.axis = .vertical
+        stk.distribution = .fillEqually
+        return stk
+    }()
     
     let cellView: UIView = {
         let c = UIView()
@@ -49,18 +55,16 @@ class EarthquakeCell: UITableViewCell {
     
     func setupView(){
         addSubview(cellView)
-        cellView.addSubview(place)
+        cellView.addSubview(infoStackView)
+//        cellView.addSubview(place)
         cellView.addSubview(magnitude)
         cellView.anchor(top: topAnchor, leading: leadingAnchor,
                         bottom: bottomAnchor, trailing: trailingAnchor,
                         centerXaxis: nil, centerYaxis: nil,
                         padding: .init(top: 4, left: 8, bottom: 4, right: 8))
+        infoStackView.anchor(top: cellView.topAnchor, leading: cellView.leadingAnchor, bottom: cellView.bottomAnchor, trailing: cellView.trailingAnchor, centerXaxis: nil, centerYaxis: nil)
         
-        place.anchor(top: cellView.topAnchor, leading: cellView.leadingAnchor,
-                         bottom: cellView.bottomAnchor, trailing: nil,
-                         centerXaxis: nil, centerYaxis: nil,
-                         padding: .init(top: 4, left: 4, bottom: 4, right: 0),
-                         size: .init(width: 200, height: 0))
+
         magnitude.anchor(top: nil, leading: nil,
                          bottom: cellView.bottomAnchor, trailing: cellView.trailingAnchor,
                          centerXaxis: nil, centerYaxis: nil,

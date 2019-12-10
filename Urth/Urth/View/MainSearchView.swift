@@ -24,14 +24,15 @@ class MainSearchView: UIView {
     // Country UI
     let countryTextLabel: SearchOptionLabels = {
         let cntrytxt = SearchOptionLabels()
-        cntrytxt.text =  "Country"
+        cntrytxt.text =  "Top locations"
         cntrytxt.accessibilityIdentifier = "country_txt_label"
        return cntrytxt
     }()
     
     let countryTxtView: SearchOptionTextFields = {
         let txt = SearchOptionTextFields()
-        txt.text = "Select a country"
+        txt.text = "Select Location"
+        
         txt.accessibilityIdentifier = "country_txtview"
         return txt
     }()
@@ -41,6 +42,7 @@ class MainSearchView: UIView {
     let magnitudeTxtLabel: SearchOptionLabels = {
         let magnitudeTxt = SearchOptionLabels()
         magnitudeTxt.text =  "Magnitude"
+
         magnitudeTxt.accessibilityIdentifier = "magnitude_txt_lbl"
         return magnitudeTxt
     }()
@@ -224,7 +226,7 @@ extension MainSearchView: UIPickerViewDelegate, UIPickerViewDataSource {
 }
 
 struct PickerData {
-    static let listOfAllCountries = ["Asia", "North", "West"]
+    static let listOfAllCountries = ["Show all","China","Chile","Indonesia","Iran","Italy","Japan","Peru"]
     static let magnitudeValues = [1, 2, 3, 4, 5]
 }
 
