@@ -11,41 +11,73 @@ import UIKit
 class InfoCardDetailView: UIView {
     
     // Properties
-    let coordinates = [Double]()
+    
+    let coordinates: UITextView = {
+        let c = UITextView(frame: .zero)
+        c.isUserInteractionEnabled = false
+        c.textAlignment = .left
+        c.tintColor = .clear
+        c.textColor = .black
+        c.backgroundColor = #colorLiteral(red: 0.4102995396, green: 0.6531198621, blue: 0.2377773523, alpha: 1)
+        c.font = UIFont(name: "San Francisco", size: 12)
+        return c
+    }()
     
     let place: UITextView = {
         let c = UITextView(frame: .zero)
+        c.font = UIFont(name: "San Francisco", size: 12)
+        c.tintColor = .clear
         c.textColor = .black
-        c.font = UIFont(name: "San Francisco", size: 15)
+        c.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        c.layer.borderWidth = 1
         return c
     }()
     let date: UITextView = {
         let c = UITextView(frame: .zero)
-        c.textColor = .black
         c.font = UIFont(name: "San Francisco", size: 12)
+        c.textAlignment = .left
+        c.backgroundColor = #colorLiteral(red: 0.4102995396, green: 0.6531198621, blue: 0.2377773523, alpha: 1)
+        c.tintColor = .clear
+        c.textColor = .black
         return c
     }()
     let magnitude: UITextView = {
         let c = UITextView(frame: .zero)
+        c.tintColor = .clear
         c.textColor = .black
         c.font = UIFont(name: "San Francisco", size: 12)
+        c.layer.cornerRadius = 10
+        c.backgroundColor = #colorLiteral(red: 1, green: 0.3548612595, blue: 0.3393234015, alpha: 1)
         return c
     }()
 
+    lazy var stackview: UIStackView = {
+        let stk = UIStackView(arrangedSubviews: [place, date, coordinates])
+        stk.axis = .vertical
+        stk.distribution = .fillEqually
+        return stk
+    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        backgroundColor = #colorLiteral(red: 0.4068799019, green: 0.6527641416, blue: 0.2465434372, alpha: 1)
-        clipsToBounds = true
     }
     
+    
     func setupViews() {
-        addSubview(place)
-
+        stackview.backgroundColor = #colorLiteral(red: 0.4102995396, green: 0.6531198621, blue: 0.2377773523, alpha: 1)
+        clipsToBounds = true
+        addSubview(stackview)
+        addSubview(magnitude)
+        stackview.anchor(top: topAnchor, leading: leadingAnchor,
+                     bottom: bottomAnchor, trailing: trailingAnchor,
+                     centerXaxis: nil, centerYaxis: nil)
         
-        place.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, centerXaxis: nil, centerYaxis: nil, padding: .init(top: 2, left: 2, bottom: 0, right: 2), size: .init(width: 0, height: 40))
-
+        magnitude.anchor(top: nil, leading: nil,
+                         bottom: bottomAnchor, trailing: trailingAnchor,
+                         centerXaxis: nil, centerYaxis: nil,
+                         padding: .init(top: 0, left: 0, bottom: -12, right: -15),
+                         size: .init(width: 60, height: 40))
     }
     
     required init?(coder aDecoder: NSCoder) {

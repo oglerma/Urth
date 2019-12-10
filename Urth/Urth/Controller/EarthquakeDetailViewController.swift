@@ -11,12 +11,10 @@ import MapKit
 
 class EarthquakeDetailViewController: UIViewController, MKMapViewDelegate {
     
-    //Map background
     let mapView : MKMapView  = {
         let map = MKMapView(frame: .zero)
         return map
     }()
-    //Pin in the map with the Coordinate locations
     let cardInfo: InfoCardDetailView = {
         var cardInfo = InfoCardDetailView(frame: .zero)
         cardInfo.layer.cornerRadius = 15
@@ -30,13 +28,17 @@ class EarthquakeDetailViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        createAnnotationInTheMap()
+    }
+    
+    
+    func createAnnotationInTheMap(){
         mapView.delegate = self
         let epicenter = MKPointAnnotation()
         epicenter.title = "Epicenter"
         epicenter.coordinate = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
         mapView.addAnnotation(epicenter)
     }
-    
     func setupViews(){
         view.addSubview(mapView)
         view.addSubview(cardInfo)

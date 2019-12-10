@@ -227,7 +227,7 @@ extension MainSearchView: UIPickerViewDelegate, UIPickerViewDataSource {
 
 struct PickerData {
     static let listOfAllCountries = ["Show all","China","Chile","Indonesia","Iran","Italy","Japan","Peru"]
-    static let magnitudeValues = [1, 2, 3, 4, 5]
+    static let magnitudeValues = [1, 2, 3, 4, 5, 6, 7]
 }
 
 

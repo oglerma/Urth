@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Network
+
 fileprivate let cellId = "cell"
 class MainViewController: UIViewController {
     
@@ -14,24 +16,40 @@ class MainViewController: UIViewController {
     fileprivate let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.separatorStyle = .none
-//        tv.allowsSelection = false
+        tv.backgroundColor = .black
         tv.register(EarthquakeCell.self, forCellReuseIdentifier: cellId)
         tv.accessibilityIdentifier = "main_tblview_id"
         return tv
     }()
     
-
+    var activityIndicator = ActivityIndicator(frame: .zero)
+    let monitor = NWPathMonitor()
+    
     var earthquakesArray = [Feature]()
     var someData = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("We're connected!")
+            } else {
+                print("No connection.")
+                self.showNetworkErrorAlert(title: "NETWORK ERROR",
+                                      message: "Please check connectivity")
+            }
+        }
+        
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
         setupView()
         
     }
     
+
     func setupView(){
+        view.backgroundColor = .black
         let mainSearchView = MainSearchView(frame: .zero)
         mainSearchView.searchDelegate = self
         navigationController?.navigationBar.barTintColor =  #colorLiteral(red: 0.4020084143, green: 0.689712584, blue: 0.1968233883, alpha: 1)
@@ -39,6 +57,7 @@ class MainViewController: UIViewController {
         title = "Search for Earthquakes"
         view.addSubview(tableView)
         view.addSubview(mainSearchView)
+        view.addSubview(activityIndicator)
         tableView.delegate = self
         tableView.dataSource = self
         mainSearchView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor,
@@ -48,6 +67,10 @@ class MainViewController: UIViewController {
         tableView.anchor(top: mainSearchView.bottomAnchor, leading: view.leadingAnchor,
                          bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor,
                          centerXaxis: nil, centerYaxis: nil)
+        
+        activityIndicator.anchor(top: nil, leading: nil, bottom: nil, trailing: nil,
+                                 centerXaxis: view.centerXAnchor, centerYaxis: view.centerYAnchor,
+                                 size: .init(width: 100, height: 100))
     }
     
     func transformDate(milliseconds: Int) -> String {
@@ -55,7 +78,19 @@ class MainViewController: UIViewController {
         return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
     }
     
+    func showMissingInfoAlertController(title: String, message: String){
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "OK", style: .cancel)
+        ac.addAction(alertAction)
+        present(ac, animated: true)
+    }
     
+    func showNetworkErrorAlert(title: String, message: String){
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        let alertAction = UIAlertAction(title: "OK", style: .cancel)
+        ac.addAction(alertAction)
+        present(ac, animated: true)
+    }
 }
 
 // TableView
@@ -74,7 +109,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         cell.magnitude.text = "\(earthquakesArray[indexPath.row].properties.mag)"
         cell.magnitude.layer.cornerRadius = 10
         cell.magnitude.layer.borderWidth = 1
-        
         return cell
     }
     
@@ -85,11 +119,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let vc = EarthquakeDetailViewController()
-        let placeString = earthquakesArray[indexPath.row].properties.place
-        vc.cardInfo.place.attributedText = NSAttributedString(string: placeString, attributes:
-        [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        vc.cardInfo.place.text = earthquakesArray[indexPath.row].properties.place
         vc.cardInfo.place.textAlignment = .center
         vc.coordinates = earthquakesArray[indexPath.row].geometry.coordinates
+        
+        vc.cardInfo.coordinates.text = "Lat: \(earthquakesArray[indexPath.row].geometry.coordinates[1]) Lon: \(earthquakesArray[indexPath.row].geometry.coordinates[0])"
+        let milliseconds = earthquakesArray[indexPath.row].properties.time
+        vc.cardInfo.date.text = "\(transformDate(milliseconds: milliseconds))"
+        vc.cardInfo.magnitude.text = "\(earthquakesArray[indexPath.row].properties.mag)m"
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -101,9 +138,17 @@ extension MainViewController: SearchDelegate {
             // Make Request Here
             let calendar = Calendar.current
             let date = Date()
-            
+            activityIndicator.startAnimating()
             
             EarthquakeAPI.requestEarthquakeData{ (eartquake, error) in
+                if let _ = error {
+                    //Show Message for Alert
+                    DispatchQueue.main.async {
+                        // stop animating if there was an error
+                        self.showNetworkErrorAlert(title: "Unable to retrieve data", message: "Please try again later")
+                        self.activityIndicator.stopAnimating()
+                    }
+                }
                 guard let earthquakeData = eartquake else {return}
                 
                 // Getting the Day based on how far the user wants to go
@@ -113,43 +158,27 @@ extension MainViewController: SearchDelegate {
                 //Filtering dates first then magnitudes
                 let newData = earthquakeData.filter({($0.properties.time / 1000) > convertIntoMilliseconds}).filter({$0.properties.mag > Double(magnitude)})
                 
+            
+                if country == "Show all" {
+                    self.earthquakesArray = newData
+                }else {
+                    self.earthquakesArray = newData.filter({$0.properties.place.contains(country)})
+                }
                 
-                self.earthquakesArray = newData
-
                 DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
                     self.tableView.reloadData()
                     
                 }
             }
         }else {
-            let ac = UIAlertController(title: "Missing Parameter", message: "Please fill all the search options", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "OK", style: .cancel)
-            ac.addAction(alertAction)
-            present(ac, animated: true)
+            showMissingInfoAlertController(title: "Missing Parameters",
+                                           message: "Please fill all the search options")
         }
     }
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
