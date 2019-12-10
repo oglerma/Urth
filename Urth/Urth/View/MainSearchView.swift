@@ -14,22 +14,22 @@ protocol SearchDelegate {
 
 class MainSearchView: UIView {
     
-    var selectedDay = 0
-    var selectedCountry = "Show all"
-    var selectedMagnitude = 1
+    private var selectedDay = 0
+    private var selectedCountry = "Show all"
+    private var selectedMagnitude = 1
     var searchDelegate: SearchDelegate!
-    let firstPicker =  UIPickerView()
-    let secondPicker = UIPickerView()
+    private let firstPicker =  UIPickerView()
+    private let secondPicker = UIPickerView()
     
     // Country UI
-    let countryTextLabel: SearchOptionLabels = {
+    private let countryTextLabel: SearchOptionLabels = {
         let cntrytxt = SearchOptionLabels()
         cntrytxt.text =  "Select Location"
         cntrytxt.accessibilityIdentifier = "country_txt_label"
        return cntrytxt
     }()
     
-    let countryTxtView: SearchOptionTextFields = {
+    private let countryTxtView: SearchOptionTextFields = {
         let txt = SearchOptionTextFields()
         txt.text = "Show all"
         
@@ -39,7 +39,7 @@ class MainSearchView: UIView {
     
     
     // Magnitude UI
-    let magnitudeTxtLabel: SearchOptionLabels = {
+    private let magnitudeTxtLabel: SearchOptionLabels = {
         let magnitudeTxt = SearchOptionLabels()
         magnitudeTxt.text =  "Select magnitude"
 
@@ -47,7 +47,7 @@ class MainSearchView: UIView {
         return magnitudeTxt
     }()
     
-    let magnitudeTxtView: SearchOptionTextFields = {
+    private let magnitudeTxtView: SearchOptionTextFields = {
         let txt = SearchOptionTextFields()
         txt.text = "1+ mag"
         txt.accessibilityIdentifier = "magnitude_txtview"
@@ -55,21 +55,21 @@ class MainSearchView: UIView {
     }()
 
     // Days UI
-    let askForDaysTxtLabel: SearchOptionLabels = {
+    private let askForDaysTxtLabel: SearchOptionLabels = {
         let askForDaysTxtLabel = SearchOptionLabels()
         askForDaysTxtLabel.text =  "Select: 0 days back"
         askForDaysTxtLabel.accessibilityIdentifier = "days_txt_lbl"
         return askForDaysTxtLabel
     }()
 
-    var daySelectedTextView: SearchOptionLabels = {
+    private var daySelectedTextView: SearchOptionLabels = {
         let daySelected = SearchOptionLabels()
         daySelected.accessibilityIdentifier = "days_txtview"
         daySelected.textAlignment = .left
         return daySelected
     }()
     
-    let slider: DaysSlider = {
+    private let slider: DaysSlider = {
         let slider = DaysSlider(frame: .zero)
         slider.addTarget(self, action: #selector(slidingInProgress(slider:)), for: .valueChanged)
         slider.accessibilityIdentifier = "slider_id"
@@ -85,7 +85,7 @@ class MainSearchView: UIView {
         }
     }
     
-    lazy var labelsStackView: UIStackView = {
+    private lazy var labelsStackView: UIStackView = {
         let stk = UIStackView(arrangedSubviews: [countryTextLabel,magnitudeTxtLabel])
         stk.translatesAutoresizingMaskIntoConstraints = false
         stk.axis = .horizontal
@@ -94,7 +94,7 @@ class MainSearchView: UIView {
         return stk
     }()
     
-    lazy var textStackView: UIStackView = {
+    private lazy var textStackView: UIStackView = {
         let stk = UIStackView(arrangedSubviews: [countryTxtView,magnitudeTxtView])
         stk.translatesAutoresizingMaskIntoConstraints = false
         stk.axis = .horizontal
@@ -103,7 +103,7 @@ class MainSearchView: UIView {
         return stk
     }()
     
-    lazy var sliderStackViewOptions: UIStackView = {
+    private lazy var sliderStackViewOptions: UIStackView = {
         let stk = UIStackView(arrangedSubviews: [askForDaysTxtLabel,slider])
         stk.translatesAutoresizingMaskIntoConstraints = false
         stk.axis = .horizontal
@@ -111,14 +111,14 @@ class MainSearchView: UIView {
         return stk
     }()
     
-    lazy var verticalContainerStackView: UIStackView = {
+    private lazy var verticalContainerStackView: UIStackView = {
         let verticalStk = UIStackView(arrangedSubviews: [labelsStackView,textStackView,sliderStackViewOptions])
         verticalStk.axis = .vertical
         verticalStk.distribution = .fillEqually
         return verticalStk
     }()
     
-    let searchBtn : UIButton = {
+    private let searchBtn : UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitleColor(.black, for: .normal)
         btn.setTitle("Search", for: .normal)
@@ -134,7 +134,7 @@ class MainSearchView: UIView {
         searchDelegate.searchTapped(day: selectedDay, country: selectedCountry, magnitude: selectedMagnitude)
     }
 
-    func setupViews(){
+    private func setupViews(){
         backgroundColor = #colorLiteral(red: 0.4102995396, green: 0.6531198621, blue: 0.2377773523, alpha: 1)
         addSubview(searchBtn)
         addSubview(verticalContainerStackView)
@@ -226,7 +226,7 @@ extension MainSearchView: UIPickerViewDelegate, UIPickerViewDataSource {
     }
 }
 
-struct PickerData {
+fileprivate struct PickerData {
     static let listOfAllCountries = ["Show all","China","Chile","Indonesia","Iran","Italy","Japan","Peru"]
     static let magnitudeValues = [1, 2, 3, 4, 5, 6, 7]
 }

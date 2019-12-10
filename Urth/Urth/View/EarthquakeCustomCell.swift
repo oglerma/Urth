@@ -8,13 +8,14 @@
 
 import UIKit
 
-class EarthquakeCell: UITableViewCell {
+class EarthquakeCustomCell: UITableViewCell {
 
     let place: UILabel = {
         let lbl = UILabel(frame: .zero)
         lbl.textColor = .black
         lbl.textAlignment = .center
         lbl.font = UIFont.boldSystemFont(ofSize: 15)
+        lbl.accessibilityIdentifier = "places_lbl"
         return lbl
     }()
     
@@ -25,6 +26,7 @@ class EarthquakeCell: UITableViewCell {
         lbl.backgroundColor = #colorLiteral(red: 1, green: 0.2698713541, blue: 0.2734055519, alpha: 1)
         lbl.font = UIFont.boldSystemFont(ofSize: 12)
         lbl.clipsToBounds = true
+        lbl.accessibilityIdentifier = "magnitude_lbl"
         return lbl
     }()
     
@@ -33,6 +35,7 @@ class EarthquakeCell: UITableViewCell {
         lbl.textColor = .black
         lbl.textAlignment = .center
         lbl.font = UIFont.boldSystemFont(ofSize: 10)
+        lbl.accessibilityIdentifier = "dateDisplayed_lbl"
         return lbl
     }()
     

@@ -20,6 +20,7 @@ class InfoCardDetailView: UIView {
         c.textColor = .black
         c.backgroundColor = #colorLiteral(red: 0.4102995396, green: 0.6531198621, blue: 0.2377773523, alpha: 1)
         c.font = UIFont(name: "San Francisco", size: 12)
+        c.accessibilityIdentifier = "coordinates_txt_view"
         return c
     }()
     
@@ -30,6 +31,7 @@ class InfoCardDetailView: UIView {
         c.textColor = .black
         c.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         c.layer.borderWidth = 1
+        c.accessibilityIdentifier = "place_txt_view"
         return c
     }()
     let date: UITextView = {
@@ -39,6 +41,7 @@ class InfoCardDetailView: UIView {
         c.backgroundColor = #colorLiteral(red: 0.4102995396, green: 0.6531198621, blue: 0.2377773523, alpha: 1)
         c.tintColor = .clear
         c.textColor = .black
+        c.accessibilityIdentifier = "date_txt_view"
         return c
     }()
     let magnitude: UITextView = {
@@ -48,6 +51,7 @@ class InfoCardDetailView: UIView {
         c.font = UIFont(name: "San Francisco", size: 12)
         c.layer.cornerRadius = 10
         c.backgroundColor = #colorLiteral(red: 1, green: 0.3548612595, blue: 0.3393234015, alpha: 1)
+        c.accessibilityIdentifier = "magnitude_txt_view"
         return c
     }()
 

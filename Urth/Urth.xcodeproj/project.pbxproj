@@ -16,7 +16,7 @@
 		37141E48239D8F7B0004A17B /* UIViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37141E47239D8F7B0004A17B /* UIViewHelpers.swift */; };
 		37578200239F6F4D00DD6AB4 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375781FF239F6F4D00DD6AB4 /* ActivityIndicator.swift */; };
 		37AE5F7E239B5F440007DD83 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AE5F7D239B5F440007DD83 /* Util.swift */; };
-		37AE5F80239B6FB90007DD83 /* EarthquakeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AE5F7F239B6FB90007DD83 /* EarthquakeCell.swift */; };
+		37AE5F80239B6FB90007DD83 /* EarthquakeCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AE5F7F239B6FB90007DD83 /* EarthquakeCustomCell.swift */; };
 		37FCE0EC239CB09A0019BED8 /* MainSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FCE0EB239CB09A0019BED8 /* MainSearchView.swift */; };
 		37FCE0EE239D4A830019BED8 /* EarthquakeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FCE0ED239D4A830019BED8 /* EarthquakeDetailViewController.swift */; };
 		37FCE0F0239D4B740019BED8 /* InfoCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FCE0EF239D4B740019BED8 /* InfoCardDetailView.swift */; };
@@ -34,7 +34,7 @@
 		37141E47239D8F7B0004A17B /* UIViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewHelpers.swift; sourceTree = "<group>"; };
 		375781FF239F6F4D00DD6AB4 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		37AE5F7D239B5F440007DD83 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
-		37AE5F7F239B6FB90007DD83 /* EarthquakeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeCell.swift; sourceTree = "<group>"; };
+		37AE5F7F239B6FB90007DD83 /* EarthquakeCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeCustomCell.swift; sourceTree = "<group>"; };
 		37FCE0EB239CB09A0019BED8 /* MainSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSearchView.swift; sourceTree = "<group>"; };
 		37FCE0ED239D4A830019BED8 /* EarthquakeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarthquakeDetailViewController.swift; sourceTree = "<group>"; };
 		37FCE0EF239D4B740019BED8 /* InfoCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoCardDetailView.swift; sourceTree = "<group>"; };
@@ -65,7 +65,7 @@
 			children = (
 				37FCE0EB239CB09A0019BED8 /* MainSearchView.swift */,
 				37141E47239D8F7B0004A17B /* UIViewHelpers.swift */,
-				37AE5F7F239B6FB90007DD83 /* EarthquakeCell.swift */,
+				37AE5F7F239B6FB90007DD83 /* EarthquakeCustomCell.swift */,
 				37FCE0EF239D4B740019BED8 /* InfoCardDetailView.swift */,
 				370C5A80239B2AA50070C3A9 /* LaunchScreen.storyboard */,
 				370C5A7E239B2AA50070C3A9 /* Assets.xcassets */,
@@ -191,7 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37FCE0EC239CB09A0019BED8 /* MainSearchView.swift in Sources */,
-				37AE5F80239B6FB90007DD83 /* EarthquakeCell.swift in Sources */,
+				37AE5F80239B6FB90007DD83 /* EarthquakeCustomCell.swift in Sources */,
 				370C5A7A239B2AA40070C3A9 /* MainViewController.swift in Sources */,
 				37FCE0EE239D4A830019BED8 /* EarthquakeDetailViewController.swift in Sources */,
 				370A7540239C1136001204B1 /* EarthquakeAPI.swift in Sources */,

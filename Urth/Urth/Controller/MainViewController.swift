@@ -13,10 +13,10 @@ fileprivate let cellId = "cell"
 class MainViewController: UIViewController {
     
 
-    fileprivate let tableView: UITableView = {
+    private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.separatorStyle = .none
-        tv.register(EarthquakeCell.self, forCellReuseIdentifier: cellId)
+        tv.register(EarthquakeCustomCell.self, forCellReuseIdentifier: cellId)
         tv.accessibilityIdentifier = "main_tblview_id"
         return tv
     }()
@@ -27,32 +27,22 @@ class MainViewController: UIViewController {
     var earthquakesArray = [Feature]()
     var someData = [String]()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    
+    func monitorNetworkConnectivity(){
         monitor.pathUpdateHandler = { path in
             if path.status != .satisfied {
-                print("Still Connected!")
                 DispatchQueue.main.async {
-                    
-                    // Fixes the error message of accidently showing two controllers at a time
+                    // Only one alert controller can be present at a time
                     if self.presentedViewController == nil {
                         self.showNetworkErrorAlert(title: "NETWORK ERROR",
                         message: "Please check connectivity")
                     }
-                    
                 }
-                
             }
         }
-        
         let queue = DispatchQueue(label: "Monitor")
         monitor.start(queue: queue)
-        setupView()
-        
     }
     
-
     func setupView(){
         view.backgroundColor = .black
         let mainSearchView = MainSearchView(frame: .zero)
@@ -96,6 +86,13 @@ class MainViewController: UIViewController {
         ac.addAction(alertAction)
         present(ac, animated: true)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        monitorNetworkConnectivity()
+        setupView()
+    }
+
 }
 
 // TableView
@@ -105,7 +102,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EarthquakeCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EarthquakeCustomCell
         let placeString = earthquakesArray[indexPath.row].properties.place
         cell.place.attributedText = NSAttributedString(string: placeString, attributes:
         [.underlineStyle: NSUnderlineStyle.single.rawValue])
@@ -162,12 +159,11 @@ extension MainViewController: SearchDelegate {
                 
                 // Getting the Day based on how far the user wants to go
                 let howFarBackDate = calendar.date(byAdding: .day, value: -day, to: date)
-                // Making the conversion in order to compare with the value received from the API
+                // Making the conversion into milliseconds in order to compare with the value received from the API
                 let convertIntoMilliseconds = Int(howFarBackDate?.timeIntervalSince1970 ?? 0 * 1000)
                 //Filtering dates first then magnitudes
                 let newData = earthquakeData.filter({($0.properties.time / 1000) > convertIntoMilliseconds}).filter({$0.properties.mag > Double(magnitude)})
                 
-            
                 if country == "Show all" {
                     self.earthquakesArray = newData
                 }else {
