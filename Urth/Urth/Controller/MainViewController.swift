@@ -16,7 +16,6 @@ class MainViewController: UIViewController {
     fileprivate let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.separatorStyle = .none
-        tv.backgroundColor = .black
         tv.register(EarthquakeCell.self, forCellReuseIdentifier: cellId)
         tv.accessibilityIdentifier = "main_tblview_id"
         return tv
@@ -32,12 +31,18 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
     
         monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                print("We're connected!")
-            } else {
-                print("No connection.")
-                self.showNetworkErrorAlert(title: "NETWORK ERROR",
-                                      message: "Please check connectivity")
+            if path.status != .satisfied {
+                print("Still Connected!")
+                DispatchQueue.main.async {
+                    
+                    // Fixes the error message of accidently showing two controllers at a time
+                    if self.presentedViewController == nil {
+                        self.showNetworkErrorAlert(title: "NETWORK ERROR",
+                        message: "Please check connectivity")
+                    }
+                    
+                }
+                
             }
         }
         
@@ -129,6 +134,10 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         vc.cardInfo.magnitude.text = "\(earthquakesArray[indexPath.row].properties.mag)m"
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 10.0
+    }
 }
 
 // Search
@@ -172,8 +181,8 @@ extension MainViewController: SearchDelegate {
                 }
             }
         }else {
-            showMissingInfoAlertController(title: "Missing Parameters",
-                                           message: "Please fill all the search options")
+            showMissingInfoAlertController(title: "Missing days selection",
+                                           message: "Select up to 30 days back")
         }
     }
     

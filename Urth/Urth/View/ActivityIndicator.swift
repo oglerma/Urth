@@ -13,8 +13,7 @@ class ActivityIndicator: UIActivityIndicatorView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.hidesWhenStopped = true
-        self.style = .whiteLarge
-        self.color = #colorLiteral(red: 0.4020084143, green: 0.689712584, blue: 0.1968233883, alpha: 1)
+        self.style = .gray
     }
     
     required init(coder: NSCoder) {

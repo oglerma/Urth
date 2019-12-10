@@ -15,8 +15,8 @@ protocol SearchDelegate {
 class MainSearchView: UIView {
     
     var selectedDay = 0
-    var selectedCountry = ""
-    var selectedMagnitude = 0
+    var selectedCountry = "Show all"
+    var selectedMagnitude = 1
     var searchDelegate: SearchDelegate!
     let firstPicker =  UIPickerView()
     let secondPicker = UIPickerView()
@@ -24,14 +24,14 @@ class MainSearchView: UIView {
     // Country UI
     let countryTextLabel: SearchOptionLabels = {
         let cntrytxt = SearchOptionLabels()
-        cntrytxt.text =  "Top locations"
+        cntrytxt.text =  "Select Location"
         cntrytxt.accessibilityIdentifier = "country_txt_label"
        return cntrytxt
     }()
     
     let countryTxtView: SearchOptionTextFields = {
         let txt = SearchOptionTextFields()
-        txt.text = "Select Location"
+        txt.text = "Show all"
         
         txt.accessibilityIdentifier = "country_txtview"
         return txt
@@ -41,7 +41,7 @@ class MainSearchView: UIView {
     // Magnitude UI
     let magnitudeTxtLabel: SearchOptionLabels = {
         let magnitudeTxt = SearchOptionLabels()
-        magnitudeTxt.text =  "Magnitude"
+        magnitudeTxt.text =  "Select magnitude"
 
         magnitudeTxt.accessibilityIdentifier = "magnitude_txt_lbl"
         return magnitudeTxt
@@ -49,7 +49,7 @@ class MainSearchView: UIView {
     
     let magnitudeTxtView: SearchOptionTextFields = {
         let txt = SearchOptionTextFields()
-        txt.text = "Select Magnitude"
+        txt.text = "1+ mag"
         txt.accessibilityIdentifier = "magnitude_txtview"
         return txt
     }()
@@ -57,7 +57,7 @@ class MainSearchView: UIView {
     // Days UI
     let askForDaysTxtLabel: SearchOptionLabels = {
         let askForDaysTxtLabel = SearchOptionLabels()
-        askForDaysTxtLabel.text =  "Days: 0 days back"
+        askForDaysTxtLabel.text =  "Select: 0 days back"
         askForDaysTxtLabel.accessibilityIdentifier = "days_txt_lbl"
         return askForDaysTxtLabel
     }()
@@ -79,9 +79,9 @@ class MainSearchView: UIView {
         let days = Int(slider.value)
         selectedDay = days
         if days == 1 {
-            askForDaysTxtLabel.text = "Days: \(days) day back"
+            askForDaysTxtLabel.text = "Select: \(days) day back"
         }else {
-            askForDaysTxtLabel.text = "Days: \(days) days back"
+            askForDaysTxtLabel.text = "Select: \(days) days back"
         }
     }
     
@@ -190,6 +190,7 @@ class MainSearchView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
 /*******************************************************
  * PICKER EXTENSION
  *******************************************************/

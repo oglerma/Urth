@@ -38,6 +38,7 @@ class EarthquakeDetailViewController: UIViewController, MKMapViewDelegate {
         epicenter.title = "Epicenter"
         epicenter.coordinate = CLLocationCoordinate2D(latitude: coordinates[1], longitude: coordinates[0])
         mapView.addAnnotation(epicenter)
+        mapView.showAnnotations(self.mapView.annotations, animated: true)
     }
     func setupViews(){
         view.addSubview(mapView)
